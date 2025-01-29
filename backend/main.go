@@ -54,6 +54,7 @@ func getJson(w http.ResponseWriter, r *http.Request){
 
 type RequestData struct {
 	Name string `json:"name"`
+	Password string `json:"password"`
 	Email string `json:"email"`
 	Age int `json:"age"`
 }
@@ -78,12 +79,24 @@ func postJson(w http.ResponseWriter, r *http.Request) {
 return
 	}
 
-	fmt.Printf("Received JSON: %+v\n", requestData)
+	response := Response{}
 
-	response := Response{
-Message: fmt.Sprintf("Hello %s, your data was received!", requestData.Name),
-Status: http.StatusOK,
+	if requestData.Name == "Bob" && requestData.Password == "password"{
+		fmt.Printf("Success\n")
+		response.Message = fmt.Sprintf("Secret")
+		response.Status = http.StatusOK
+	} else {
+		response.Message = "Invalid credentials"
+		response.Status = http.StatusUnauthorized
+		
 	}
+
+	fmt.Printf("Received JSON: %+v\n", requestData)
+	fmt.Printf("%s\n",requestData.Name)
+	fmt.Printf("%d\n",requestData.Age)
+	fmt.Printf("%s\n", requestData.Email)
+
+
 
 	w.Header().Set("Content-Type", "application/json")
 
