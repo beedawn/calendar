@@ -6,6 +6,7 @@ import (
 	"io"
 	"html"
 	"encoding/json"
+	"os"
 )
 
 func hello(w http.ResponseWriter, r *http.Request){
@@ -80,8 +81,8 @@ return
 	}
 
 	response := Response{}
-
-	if requestData.Name == "Bob" && requestData.Password == "password"{
+	password := os.Getenv("PASSWORD")
+	if requestData.Name == "Bob" && requestData.Password == password{
 		fmt.Printf("Success\n")
 		response.Message = fmt.Sprintf("Secret")
 		response.Status = http.StatusOK
@@ -107,7 +108,7 @@ return
 }
 
 func main() {
-	fmt.Println("test")
+
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/post", post)
 	http.HandleFunc("/getJson", getJson)
