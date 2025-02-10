@@ -12,6 +12,7 @@ func newLine(s string) string{
 	return s + "\n"
 }
 
+
 func main(){
 
 var cal calendar.Calendar
@@ -24,11 +25,13 @@ var cal calendar.Calendar
 	newRoom.Event = make([]event.Event, 0)
 	newRoom.Event = append(newRoom.Event, event.Event{"starttime","user","duration"})  
 	cal.Room = append(cal.Room, newRoom)
-
-for _, room := range cal.Room {
+cal.NewRoom()
+for i, room := range cal.Room {
 	for _, event := range room.Event{
 
     fmt.Println(event) // Or fmt.Printf("%+v\n", event) for more detail
 		}
+		fmt.Println(i)
 }
+
 }
