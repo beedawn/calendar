@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+import Calendar "calendar"
+
 func hello(w http.ResponseWriter, r *http.Request){
 
 	fmt.Fprintf(w,"hello, %q\n", html.EscapeString(r.URL.Path))
@@ -109,10 +111,16 @@ return
 
 func main() {
 
-	http.HandleFunc("/hello", hello)
+/*	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/post", post)
 	http.HandleFunc("/getJson", getJson)
 	http.HandleFunc("/postJson", postJson)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)*/
+
+
+	var cal calendar.Calendar
+	cal.Test = "hi"
+
+	fmt.Printf(cal.test)
 
 } 
