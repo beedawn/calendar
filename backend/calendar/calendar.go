@@ -5,5 +5,6 @@ import (
 
 type Calendar struct {
 	Test string
-	Room room.Room
+	Room []room.Room
+
 }

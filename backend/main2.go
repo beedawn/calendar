@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"backend/calendar"
 	"backend/event"
+	"backend/room"
 
 )
 
@@ -17,11 +18,17 @@ var cal calendar.Calendar
 		cal.Test = "hi"
 
 	fmt.Printf(newLine(cal.Test))
+	cal.Room = make([]room.Room, 0)
 
-	cal.Room.Event = append(cal.Room.Event,event.Event{"starttime","user","duration"})
+	newRoom := room.Room{}
+	newRoom.Event = make([]event.Event, 0)
+	newRoom.Event = append(newRoom.Event, event.Event{"starttime","user","duration"})  
+	cal.Room = append(cal.Room, newRoom)
 
+for _, room := range cal.Room {
+	for _, event := range room.Event{
 
-for _, event := range cal.Room.Event {
     fmt.Println(event) // Or fmt.Printf("%+v\n", event) for more detail
+		}
 }
 }
