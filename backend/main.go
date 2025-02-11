@@ -1,22 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"io"
-	"html"
 	"encoding/json"
+	"fmt"
+	"html"
+	"io"
+	"net/http"
 	"os"
 )
 
 import Calendar "calendar"
 
-func hello(w http.ResponseWriter, r *http.Request){
+func hello(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprintf(w,"hello, %q\n", html.EscapeString(r.URL.Path))
+	fmt.Fprintf(w, "hello, %q\n", html.EscapeString(r.URL.Path))
 }
 
-func post (w http.ResponseWriter, r *http.Request){
+func post(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -37,13 +37,13 @@ func post (w http.ResponseWriter, r *http.Request){
 
 type Response struct {
 	Message string `json:"message"`
-	Status int `json:"status"`
+	Status  int    `json:"status"`
 }
 
-func getJson(w http.ResponseWriter, r *http.Request){
+func getJson(w http.ResponseWriter, r *http.Request) {
 	response := Response{
 		Message: "This is a json response",
-		Status: 200,
+		Status:  200,
 	}
 	w.Header().Set("Content-Type", "application/json")
 
@@ -56,21 +56,21 @@ func getJson(w http.ResponseWriter, r *http.Request){
 }
 
 type RequestData struct {
-	Name string `json:"name"`
+	Name     string `json:"name"`
 	Password string `json:"password"`
-	Email string `json:"email"`
-	Age int `json:"age"`
+	Email    string `json:"email"`
+	Age      int    `json:"age"`
 }
 
 func postJson(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodPost{
+	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
 		return
-}
+	}
 
 	body, err := io.ReadAll(r.Body)
-	if err != nil{
+	if err != nil {
 		http.Error(w, "Failed to read requestbody", http.StatusInternalServerError)
 		return
 	}
@@ -79,27 +79,25 @@ func postJson(w http.ResponseWriter, r *http.Request) {
 	var requestData RequestData
 	if err := json.Unmarshal(body, &requestData); err != nil {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-return
+		return
 	}
 
 	response := Response{}
 	password := os.Getenv("PASSWORD")
-	if requestData.Name == "Bob" && requestData.Password == password{
+	if requestData.Name == "Bob" && requestData.Password == password {
 		fmt.Printf("Success\n")
 		response.Message = fmt.Sprintf("Secret")
 		response.Status = http.StatusOK
 	} else {
 		response.Message = "Invalid credentials"
 		response.Status = http.StatusUnauthorized
-		
+
 	}
 
 	fmt.Printf("Received JSON: %+v\n", requestData)
-	fmt.Printf("%s\n",requestData.Name)
-	fmt.Printf("%d\n",requestData.Age)
+	fmt.Printf("%s\n", requestData.Name)
+	fmt.Printf("%d\n", requestData.Age)
 	fmt.Printf("%s\n", requestData.Email)
-
-
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -111,16 +109,15 @@ return
 
 func main() {
 
-/*	http.HandleFunc("/hello", hello)
-	http.HandleFunc("/post", post)
-	http.HandleFunc("/getJson", getJson)
-	http.HandleFunc("/postJson", postJson)
-	http.ListenAndServe(":8080", nil)*/
-
+	/*	http.HandleFunc("/hello", hello)
+		http.HandleFunc("/post", post)
+		http.HandleFunc("/getJson", getJson)
+		http.HandleFunc("/postJson", postJson)
+		http.ListenAndServe(":8080", nil)*/
 
 	var cal calendar.Calendar
 	cal.Test = "hi"
 
 	fmt.Printf(cal.test)
 
-} 
+}
