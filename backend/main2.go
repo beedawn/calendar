@@ -23,7 +23,7 @@ var cal calendar.Calendar
 
 	newRoom := room.Room{}
 	newRoom.Event = make([]event.Event, 0)
-	newRoom.Event = append(newRoom.Event, event.Event{"starttime","user","duration"})  
+	newRoom.Event = append(newRoom.Event, event.Event{0,"starttime","user","duration"})  
 	cal.Room = append(cal.Room, newRoom)
 cal.NewRoom()
 

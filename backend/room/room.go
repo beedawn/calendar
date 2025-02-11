@@ -15,7 +15,7 @@ func (r *Room) NewEvent(){
 	r.Event = make([]event.Event,0)
 	}
 
-	newE := event.Event{}
+	newE := event.Event{Id:len(r.Event)}
 	r.Event = append(r.Event, newE)
 }
 
