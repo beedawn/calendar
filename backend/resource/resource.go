@@ -1,17 +1,17 @@
-package room
+package resource
 
 import (
 "backend/event"
 )
 
-type Room struct {
+type Resource struct {
 	Id int
 	Event []event.Event
 	//what else is needed? comments?
 }
 
 
-func (r *Room) NewEvent(){
+func (r *Resource) NewEvent(){
 	if r.Event == nil {
 	r.Event = make([]event.Event,0)
 	}
@@ -24,7 +24,7 @@ func (r *Room) NewEvent(){
 
 //for editing an event, do we just want to delete/ add event or have an editing function?
 
-func (r *Room) DeleteEvent(e event.Event) int {
+func (r *Resource) DeleteEvent(e event.Event) int {
 	if r.Event == nil {
 		return 1
 	}

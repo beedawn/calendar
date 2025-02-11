@@ -1,31 +1,31 @@
 package calendar
 import (
-	"backend/room"
+	"backend/resource"
 )
 
 type Calendar struct {
 	Test string
-	Room []room.Room
+	Resource []resource.Resource
 
 }
 
 
-func (c *Calendar) NewRoom(){
-	if c.Room == nil {
-		c.Room = make([]room.Room,0)
+func (c *Calendar) NewResource(){
+	if c.Resource == nil {
+		c.Resource = make([]resource.Resource,0)
 	}
-	newR := room.Room{Id:len(c.Room)}
-	c.Room = append(c.Room, newR)
+	newR := resource.Resource{Id:len(c.Resource)}
+	c.Resource = append(c.Resource, newR)
 	
 }
 
-func (c *Calendar) DeleteRoom(r room.Room) int{
-	if c.Room == nil {
+func (c *Calendar) DeleteResource(r resource.Resource) int{
+	if c.Resource == nil {
 		return 1
 	}
-	for i, room := range c.Room {
-		if room.Id == r.Id {
-			c.Room = append(c.Room[:i],c.Room[i+1:]...)
+	for i, resource := range c.Resource {
+		if resource.Id == r.Id {
+			c.Resource = append(c.Resource[:i],c.Resource[i+1:]...)
 			return 0
 		}
 	}
