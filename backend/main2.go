@@ -14,14 +14,16 @@ func newLine(s string) string {
 func main() {
 
 	var cal calendar.Calendar
-	cal.Test = "hi"
 
-	fmt.Printf(newLine(cal.Test))
 	cal.Resource = make([]resource.Resource, 0)
 
-	newResource := resource.Resource{}
-	newResource.Event = make([]event.Event, 0)
-	newResource.Event = append(newResource.Event, event.Event{0, "starttime", "user", "duration"})
+	newResource := resource.Resource{
+		Event: []event.Event{
+			{Id: 0, StartTime: "starttime", User: "user", Duration: "duration"},
+		},
+	}
+	//	newResource.Event = make([]event.Event, 0)
+	//	newResource.Event = append(newResource.Event, event.Event{0, "starttime", "user", "duration"})
 	cal.Resource = append(cal.Resource, newResource)
 	cal.NewResource()
 
