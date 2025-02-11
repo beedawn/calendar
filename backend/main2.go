@@ -26,6 +26,8 @@ var cal calendar.Calendar
 	newRoom.Event = append(newRoom.Event, event.Event{"starttime","user","duration"})  
 	cal.Room = append(cal.Room, newRoom)
 cal.NewRoom()
+
+cal.Room[1].NewEvent()
 for i, room := range cal.Room {
 	for _, event := range room.Event{
 
@@ -34,4 +36,14 @@ for i, room := range cal.Room {
 		fmt.Println(i)
 }
 
+	cal.Room[1].DeleteEvent(event.Event{})
+for i, room := range cal.Room {
+	for _, event := range room.Event{
+
+    fmt.Println(event) // Or fmt.Printf("%+v\n", event) for more detail
+		}
+		fmt.Printf("%d\n",room.Id)
+		fmt.Println(i)
+}
+	fmt.Printf("%d",len(cal.Room[1].Event))
 }
