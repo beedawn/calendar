@@ -17,7 +17,23 @@ type Resource struct {
 	//what else is needed? comments?
 }
 
+func (r *Resource) conflictCheck(startTime, endTime time.Time) {
+	for _, event := range r.Event{
+		fmt.Println("conflict check")
+fmt.Println(event)
 
+	/*	if startTime.Before(event.EndTime){
+		fmt.Println("Error! StartTime is before an Events endtime")
+		}*/
+
+		if startTime.Before(event.EndTime) && endTime.After(event.StartTime)  {
+		
+		fmt.Println("ahh error!")
+		}
+		
+	}
+
+}
 
 func validateTimes(startTime, endTime time.Time) error{
 	if endTime.Before(startTime){
@@ -36,6 +52,7 @@ func (r *Resource) NewEvent(start time.Time, end time.Time) (error) {
 		fmt.Println("error!")
 	return errors.New("end time is before start time")
 	}
+	r.conflictCheck(start,end)
 	if r.Event == nil {
 	r.Event = make([]event.Event,0)
 	}
