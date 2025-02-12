@@ -41,7 +41,7 @@ func main() {
 	startTime:=time.Now()
 	endTime:=time.Now()
 	cal.Resource[1].NewEvent(startTime, endTime)
-	cal.Resource[1].NewEvent(startTime, time.Now())
+	cal.Resource[1].NewEvent(time.Now(), time.Now())
 
 
 	//loopEvents(cal)

@@ -17,22 +17,20 @@ type Resource struct {
 	//what else is needed? comments?
 }
 
+func eventOverlap (start1, end1, start2, end2 time.Time) bool {
+return start1.Before(end2) && end1.After(start2)
+}
+
 func (r *Resource) conflictCheck(startTime, endTime time.Time) {
+	count := 0
 	for _, event := range r.Event{
-		fmt.Println("conflict check")
-fmt.Println(event)
-
-	/*	if startTime.Before(event.EndTime){
-		fmt.Println("Error! StartTime is before an Events endtime")
-		}*/
-
-		if startTime.Before(event.EndTime) && endTime.After(event.StartTime)  {
-		
+		if eventOverlap(startTime, endTime, event.StartTime, event.EndTime) {
+		count++
+		}
+	if count >= r.ConcurrentEvents{
 		fmt.Println("ahh error!")
 		}
-		
 	}
-
 }
 
 func validateTimes(startTime, endTime time.Time) error{
