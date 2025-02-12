@@ -11,6 +11,9 @@ import (
 type Resource struct {
 	Id int
 	Event []event.Event
+	ConcurrentEvents int
+	Category string
+	Name string
 	//what else is needed? comments?
 }
 
