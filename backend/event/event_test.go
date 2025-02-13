@@ -32,7 +32,7 @@ func TestEventCreation(t *testing.T){
 		t.Errorf("Expected CreatedTime to be %v, got %v", now, event.CreatedTime)
 	}
 	if !event.StartTime.Equal(startTime){
-		t.Errorf("Expected StartTime to be %v, got %v" startTime, event.StartTime)
+		t.Errorf("Expected StartTime to be %v, got %v", startTime, event.StartTime)
 
 	}
 	if !event.EndTime.Equal(endTime){
