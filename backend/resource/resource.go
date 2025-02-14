@@ -4,7 +4,7 @@ import (
 "backend/event"
 	"time"
 	"errors"
-	"fmt"
+
 	
 )
 
@@ -34,23 +34,11 @@ func (r *Resource) conflictCheck(startTime, endTime time.Time) error{
 	return nil
 }
 
-func validateTimes(startTime, endTime time.Time) error{
-	if endTime.Before(startTime){
-		return errors.New("end date/time is before start date/time")
-	}
 
-	if endTime.Equal(startTime){
-		return errors.New("end date/time is equal to start date/time")
-	}
-	return nil
-}
 
 func (r *Resource) NewEvent(start time.Time, end time.Time) (*event.Event, error) {
 
-	if validateTimes(start, end) != nil {
-		fmt.Println("error!")
-	return nil, errors.New("end time is before start time")
-	}
+
 	conflictResult := r.conflictCheck(start,end)
 	if conflictResult != nil{
 		return nil, conflictResult
