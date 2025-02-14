@@ -38,13 +38,12 @@ func main() {
 	//	newResource.Event = append(newResource.Event, event.Event{0, "starttime", "user", "duration"})
 	cal.Resource = append(cal.Resource, newResource)
 	cal.NewResource()
-	startTime:=time.Now()
-	endTime:=time.Now()
+	startTime := time.Now()
+	endTime := time.Now()
 	cal.Resource[1].NewEvent(startTime, endTime)
 	cal.Resource[1].NewEvent(time.Now(), time.Now())
 
-
 	//loopEvents(cal)
 	cal.Resource[1].DeleteEvent(event.Event{})
-//	loopEvents(cal)
+	// loopEvents(cal)
 }
