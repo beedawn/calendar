@@ -67,4 +67,18 @@ func TestNewEventSameTimes(t *testing.T){
 
 }
 
+func TestNewEventStartTimeAfterEndTime(t *testing.T){
+	var newResource Resource
 
+	startTime := time.Now()
+	endTime := time.Now()
+	newResource.NewEvent(endTime, startTime)
+
+	if len(newResource.Event) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(newResource.Event))
+	
+	}
+
+
+
+}
