@@ -38,4 +38,46 @@ func TestDeleteResource (t *testing.T){
 
 
 }
+func TestNilResource (t *testing.T){
 	
+	cal := &Calendar{
+		Resource: nil,
+	}
+
+	expectedErr := "No resources to delete"
+
+	err := cal.DeleteResource(resource.Resource{})
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
+
+	
+
+}
+
+
+
+func TestResourceNotFound (t *testing.T){
+	
+	cal := &Calendar{
+		Resource:make([]resource.Resource,0),
+	}
+
+	expectedErr := "Resource not found"
+
+	err := cal.DeleteResource(resource.Resource{Id:1})
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
+
+	
+
+}
