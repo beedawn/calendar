@@ -21,18 +21,50 @@ func TestResourceCreation (t *testing.T){
 	} 
 
 	if newResource.Event[0].Id != 0 {
-		t.Errorf("Expected Id to be 0, got %d", newResource.Id)
+		t.Errorf("Expected Id to be 0, got %d", newResource.Event[0].Id)
 	}
-	if newResource.Event[0].StartTime!=startTime{
+	if !newResource.Event[0].StartTime.Equal(startTime){
 		t.Errorf("Expected startTime to be %s, got %s", startTime, newResource.Event[0].StartTime)
 	}
-	if newResource.Event[0].EndTime != endTime {
+	if !newResource.Event[0].EndTime.Equal(endTime) {
 		t.Errorf("Expected endtime to be %s, got %s", endTime, newResource.Event[0].EndTime)
 	}
-	if newResource.Event[0].CreatedTime != createdTime {
+	if !newResource.Event[0].CreatedTime.Equal(createdTime) {
 		t.Errorf("Expected createdTime to be %s, got %s", createdTime, newResource.Event[0].CreatedTime)
 	}
 	if newResource.Event[0].User != username {
 		t.Errorf("Expected user to be %s, got %s", username, newResource.Event[0].User)
 	}
 }
+
+func TestNewEvent (t *testing.T){
+	var newResource Resource
+
+	startTime := time.Now()
+	endTime := time.Now()
+	newResource.NewEvent(startTime, endTime)
+	
+	if len(newResource.Event) != 1 {
+		t.Errorf("Expected length of events to be 1, got %d", len(newResource.Event))
+	}
+	
+}
+
+func TestNewEventSameTimes(t *testing.T){
+	var newResource Resource
+
+	startTime := time.Now()
+	endTime := time.Now()
+	newResource.NewEvent(startTime, endTime)
+	newResource.NewEvent(startTime, endTime)
+
+	if len(newResource.Event) != 1 {
+		t.Errorf("Expected length of events to be 1 when testing two events with same times, got %d", len(newResource.Event))
+	
+	}
+
+
+
+}
+
+

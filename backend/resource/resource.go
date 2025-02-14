@@ -21,16 +21,17 @@ func eventOverlap (start1, end1, start2, end2 time.Time) bool {
 return start1.Before(end2) && end1.After(start2)
 }
 
-func (r *Resource) conflictCheck(startTime, endTime time.Time) {
+func (r *Resource) conflictCheck(startTime, endTime time.Time) error{
 	count := 0
 	for _, event := range r.Event{
 		if eventOverlap(startTime, endTime, event.StartTime, event.EndTime) {
 		count++
 		}
 	if count >= r.ConcurrentEvents{
-		fmt.Println("ahh error!")
+		return errors.New("times are conflicting!")
 		}
 	}
+	return nil
 }
 
 func validateTimes(startTime, endTime time.Time) error{
@@ -44,13 +45,16 @@ func validateTimes(startTime, endTime time.Time) error{
 	return nil
 }
 
-func (r *Resource) NewEvent(start time.Time, end time.Time) (error) {
+func (r *Resource) NewEvent(start time.Time, end time.Time) (*event.Event, error) {
 
 	if validateTimes(start, end) != nil {
 		fmt.Println("error!")
-	return errors.New("end time is before start time")
+	return nil, errors.New("end time is before start time")
 	}
-	r.conflictCheck(start,end)
+	conflictResult := r.conflictCheck(start,end)
+	if conflictResult != nil{
+		return nil, conflictResult
+	}
 	if r.Event == nil {
 	r.Event = make([]event.Event,0)
 	}
@@ -60,7 +64,7 @@ func (r *Resource) NewEvent(start time.Time, end time.Time) (error) {
 	r.Event = append(r.Event, newE)
 	//if there are conflicts, do nothing and return an error
 
-	return nil
+	return &newE, nil
 }
 
 //for editing an event, do we just want to delete/ add event or have an editing function?
