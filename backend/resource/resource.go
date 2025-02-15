@@ -80,5 +80,5 @@ func (r *Resource) DeleteEvent(e event.Event) error {
 		}
 
 	}
-return errors.New("Event not found in given resouce")
+return errors.New("Event not found in given resource")
 }

@@ -1,0 +1,9 @@
+first command
+go test ./... -coverprofile coverage.out
+
+then
+go tool cover -html=coverage.out -o coverage.html
+
+
+then
+chromium coverage.html

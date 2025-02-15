@@ -72,6 +72,8 @@ func TestNewEventStartTimeAfterEndTime(t *testing.T){
 
 	startTime := time.Now()
 	endTime := time.Now()
+
+
 	newResource.NewEvent(endTime, startTime)
 
 	if len(newResource.Event) != 0 {
@@ -80,5 +82,94 @@ func TestNewEventStartTimeAfterEndTime(t *testing.T){
 	}
 
 
+
+}
+
+
+func TestNewEventStartTimeEqualEndTime(t *testing.T){
+	var newResource Resource
+
+	startTime := time.Now()
+	newResource.NewEvent(startTime, startTime)
+
+	if len(newResource.Event) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(newResource.Event))
+	
+	}
+
+
+
+}
+
+
+
+func TestDeleteEvent(t *testing.T){
+	var newResource Resource
+
+	startTime := time.Now()
+	endTime := time.Now()
+	newResource.NewEvent(startTime, endTime)
+	newResource.DeleteEvent(newResource.Event[0])
+
+	if len(newResource.Event) != 0 {
+		t.Errorf("Expected length of events to be 0 after deleting event, got %d", len(newResource.Event))
+	
+	}
+
+
+	
+
+}
+
+
+func TestDeleteEventResourceNotExist(t *testing.T){
+	var newResource Resource
+	newResource.Event = make([]event.Event,0)
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := newResource.DeleteEvent(eventN)
+	expectedErr := "Event not found in given resource"
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
+
+}
+
+
+
+
+
+func TestDeleteEventResourceEventsEmpty(t *testing.T){
+	var newResource Resource
+
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := newResource.DeleteEvent(eventN)
+	expectedErr := "Resource has no events"
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
 
 }
