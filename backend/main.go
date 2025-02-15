@@ -2,8 +2,7 @@ package main
 
 import (
 	"backend/calendar"
-	"backend/event"
-	"backend/resource"
+
 	"fmt"
 	"time"
 )
@@ -27,23 +26,12 @@ func main() {
 
 	var cal calendar.Calendar
 
-	cal.Resource = make([]resource.Resource, 0)
-
-	newResource := resource.Resource{
-		Event: []event.Event{
-			{Id: 0, User: "user", StartTime: time.Now(), EndTime: time.Now(), CreatedTime: time.Now()},
-		},
-	}
-	//	newResource.Event = make([]event.Event, 0)
-	//	newResource.Event = append(newResource.Event, event.Event{0, "starttime", "user", "duration"})
-	cal.Resource = append(cal.Resource, newResource)
-	cal.NewResource()
+	newR := cal.NewResource()
 	startTime := time.Now()
 	endTime := time.Now()
-	cal.Resource[1].NewEvent(startTime, endTime)
-	cal.Resource[1].NewEvent(time.Now(), time.Now())
+	newE, _ := newR.NewEvent(startTime, endTime)
 
 	//loopEvents(cal)
-	cal.Resource[1].DeleteEvent(event.Event{})
+	newR.DeleteEvent(*newE)
 	// loopEvents(cal)
 }
