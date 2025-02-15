@@ -7,31 +7,28 @@ import (
 	"time"
 )
 
-func newLine(s string) string {
-	return s + "\n"
-}
-
-func loopEvents(c calendar.Calendar) {
-	for _, resource := range c.Resource {
-		for _, event := range resource.Event {
-
-			fmt.Println(event) // Or fmt.Printf("%+v\n", event) for more detail
-		}
-		fmt.Printf("Resource ID: %d\n", resource.Id)
-	}
-
-}
 
 func main() {
 
 	var cal calendar.Calendar
+	var username string
 
+	var password string
 	newR := cal.NewResource()
 	startTime := time.Now()
 	endTime := time.Now()
 	newE, _ := newR.NewEvent(startTime, endTime)
+	fmt.Println(newE)
 
-	//loopEvents(cal)
+	fmt.Println("Enter username:")
+	fmt.Scan(&username)
+	fmt.Println("Enter password:")
+	fmt.Scan(&password)
+
+	if username == "test" && password == "test"{
+		fmt.Println("Yay!")
+	}
+
 	newR.DeleteEvent(*newE)
-	// loopEvents(cal)
+
 }
