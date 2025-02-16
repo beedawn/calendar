@@ -6,7 +6,7 @@ import (
 )
 
 type Calendar struct {
-	
+	Id int	
 	Resource []resource.Resource
 
 }
