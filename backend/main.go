@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	"strconv"
 )
 
 func main() {
@@ -49,7 +50,7 @@ func main() {
 					case "3":
 						UpdateResource()
 					case "4":
-						DeleteResource()	
+						calList =	DeleteResource(calList)	
 					}
 				}
 			}
@@ -64,7 +65,16 @@ func main() {
 func CreateResource(c []calendar.Calendar) calendar.Calendar{
 	fmt.Println("Create Resource!")
 	var cal calendar.Calendar
-	cal.Id = len(c)
+
+	if len(c) == 0 {
+
+
+	cal.Id = 1
+	}
+
+	if len(c) != 0 {
+	cal.Id = c[len(c)-1].Id+1	
+	}
 	newR := cal.NewResource()
 	startTime := time.Now()
 	endTime := time.Now()
@@ -87,7 +97,24 @@ func UpdateResource(){
 	fmt.Println("Update Resource!")
 }
 
-func DeleteResource(){
+func DeleteResource(c []calendar.Calendar) []calendar.Calendar{
 	fmt.Println("Delete Resource!")
+	var delInput, confirm string
+
+		fmt.Println("Which Calendar should be deleted?")
+
+		fmt.Scan(&delInput)
+		fmt.Println(delInput+" will be deleted, are you sure?")
+		fmt.Scan(&confirm)
+		if confirm == "y" {
+			fmt.Println("Delete")
+		}
+		num ,err := strconv.Atoi(delInput)
+		if err != nil {
+		return c
+	}
+	c = append(c[:num-1],c[num:]...)
+	
+	return c
 
 }
