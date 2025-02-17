@@ -46,7 +46,7 @@ func main() {
 						cal := CreateResource(calList)
 						calList = append(calList, cal)
 					case "2":
-						ViewResource(calList)
+						ViewResource(&calList)
 					case "3":
 						UpdateResource()
 					case "4":
@@ -82,13 +82,56 @@ func CreateResource(c []calendar.Calendar) calendar.Calendar{
 	return cal
 }
 
-func ViewResource(cal []calendar.Calendar){
-	fmt.Println("View Resource!")
+func ViewResource(cal *[]calendar.Calendar){
+	var openCal string
 
-	for _, item := range cal{
-		fmt.Println(item)
-		for _, resource := range item.Resource{
-			fmt.Println(resource.Id)
+	if len(*cal) ==0 {
+		fmt.Println("No calendars!")
+	} else{
+	fmt.Println("Here is a list of all calendars:")
+	for _, c := range *cal{
+		fmt.Println(c)
+		}
+		fmt.Println("Which would you like to open?")
+		fmt.Scan(&openCal)
+
+	for i, c := range *cal{
+	strId := strconv.Itoa(c.Id)
+	if strId == openCal{
+			fmt.Println(c)
+
+		for _, resource := range c.Resource {
+		fmt.Println(resource.Id)
+
+		}
+				var calR string
+				fmt.Println("Which resource would you like to edit?")
+				fmt.Scan(&calR)
+
+		for j, resource := range c.Resource {
+					rId:= strconv.Itoa(resource.Id)
+					if calR == rId {
+				var calEdit string
+				fmt.Println("What would you like to do next?\n1: Add Event")
+				fmt.Scan(&calEdit)
+				
+				if calEdit == "1" {
+					fmt.Println("hello")
+					newE, err := resource.NewEvent(time.Now(), time.Now())
+					if err != nil {
+						break
+							}
+					(*cal)[i].Resource[j].Event= append(resource.Event, *newE)
+					fmt.Println(resource.Event)
+				}
+
+					}
+
+		}
+				fmt.Println(cal)
+
+			}
+
 		}
 	}
 }
