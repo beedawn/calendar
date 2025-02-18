@@ -46,9 +46,9 @@ func main() {
 						cal := CreateResource(calList)
 						calList = append(calList, cal)
 					case "2":
-						ViewResource(&calList)
+						ViewResource(calList)
 					case "3":
-						UpdateResource()
+						UpdateResource(&calList)
 					case "4":
 						calList =	DeleteResource(calList)	
 					}
@@ -82,17 +82,33 @@ func CreateResource(c []calendar.Calendar) calendar.Calendar{
 	return cal
 }
 
-func ViewResource(cal *[]calendar.Calendar){
-	var openCal string
+func ViewResource(cal []calendar.Calendar){
 
-	if len(*cal) ==0 {
+	if len(cal) ==0 {
 		fmt.Println("No calendars!")
 	} else{
 	fmt.Println("Here is a list of all calendars:")
-	for _, c := range *cal{
+	for _, c := range cal{
 		fmt.Println(c)
 		}
-		fmt.Println("Which would you like to open?")
+
+	}
+}
+
+func UpdateResource(cal *[]calendar.Calendar){
+	fmt.Println("Update Resource!")
+
+		var openCal string
+		fmt.Println("Which calendar would you like to open?")
+
+		for i, c := range *cal{
+		if i == len(*cal)-1{
+			fmt.Printf("%d", c.Id)
+			break
+		}
+
+		fmt.Printf("%d, ", c.Id)
+	}
 		fmt.Scan(&openCal)
 
 	for i, c := range *cal{
@@ -133,11 +149,6 @@ func ViewResource(cal *[]calendar.Calendar){
 			}
 
 		}
-	}
-}
-
-func UpdateResource(){
-	fmt.Println("Update Resource!")
 }
 
 func DeleteResource(c []calendar.Calendar) []calendar.Calendar{
