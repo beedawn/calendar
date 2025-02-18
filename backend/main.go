@@ -53,7 +53,7 @@ func main() {
 					case "3":
 						UpdateResource(&calList)
 					case "4":
-						calList =	DeleteResource(calList)	
+						calList =	DeleteCalendar(calList)	
 					}
 				}
 			}
@@ -175,7 +175,7 @@ func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar{
 		if err != nil {
 		return c
 	}
-//	c = append(c[:num-1],c[num:]...)
+	c = append(c[:num-1],c[num:]...)
 	
 	return c
 
