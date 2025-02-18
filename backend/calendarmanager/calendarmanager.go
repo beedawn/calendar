@@ -1,7 +1,7 @@
 package calendarmanager
 
 import (
-	"backend/calendarmanager"
+	"backend/calendar"
 )
 
 type CalendarManager struct{
