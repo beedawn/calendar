@@ -7,6 +7,7 @@ import (
 	"time"
 	"strings"
 	"strconv"
+	"backend/calendarmanager"
 )
 
 func main() {
@@ -18,6 +19,17 @@ func main() {
 	endTime := time.Now()
 	newE, _ := newR.NewEvent(startTime, endTime)
 	*/
+
+	var calManager calendarmanager.CalendarManager
+	bally := calManager.NewCalendar()
+	cally := calManager.NewCalendar()
+	fmt.Println(calManager.Calendars)
+	fmt.Println(bally)
+	fmt.Println(cally)
+	calManager.DeleteCalendar(cally)
+//	calManager.DeleteCalendar(bally)
+
+	fmt.Println(calManager.Calendars)
 	var calList = make([]calendar.Calendar,0)
 	fmt.Println("Enter username:")
 	fmt.Scan(&username)
