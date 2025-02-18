@@ -28,7 +28,7 @@ func TestNewResource(t *testing.T){
 
 func TestDeleteResource (t *testing.T){
 	var cal Calendar
-	newR := cal.NewResource()
+	newR, _ := cal.NewResource()
 
 	cal.DeleteResource(newR)
 
@@ -46,7 +46,7 @@ func TestNilResource (t *testing.T){
 
 	expectedErr := "No resources to delete"
 
-	err := cal.DeleteResource(resource.Resource{})
+	_, err := cal.DeleteResource(resource.Resource{})
 
 	if err == nil {
 		t.Fatalf("Expected an error, but got none")
@@ -69,7 +69,7 @@ func TestResourceNotFound (t *testing.T){
 
 	expectedErr := "Resource not found"
 
-	err := cal.DeleteResource(resource.Resource{Id:1})
+	_, err := cal.DeleteResource(resource.Resource{Id:1})
 
 	if err == nil {
 		t.Fatalf("Expected an error, but got none")
