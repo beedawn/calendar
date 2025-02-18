@@ -43,8 +43,11 @@ func main() {
 					fmt.Scan(&calInput)
 					switch calInput {
 					case "1":
+						fmt.Println("***************")
+						fmt.Println("Creating calendar...")
 						cal := CreateResource(calList)
 						calList = append(calList, cal)
+						fmt.Printf("Calendar %d, created!\n", cal.Id)
 					case "2":
 						ViewResource(calList)
 					case "3":
@@ -61,9 +64,8 @@ func main() {
 
 }
 
-
+//this also creates a calendar, i think a "CalendarManager" or similar abstraction is needed to hold all the calendars and move this functionality into something more useful than th emain file
 func CreateResource(c []calendar.Calendar) calendar.Calendar{
-	fmt.Println("Create Resource!")
 	var cal calendar.Calendar
 
 	if len(c) == 0 {
@@ -75,7 +77,7 @@ func CreateResource(c []calendar.Calendar) calendar.Calendar{
 	if len(c) != 0 {
 	cal.Id = c[len(c)-1].Id+1	
 	}
-	newR := cal.NewResource()
+	newR, _ := cal.NewResource()
 	startTime := time.Now()
 	endTime := time.Now()
 	newR.NewEvent(startTime, endTime)
@@ -89,7 +91,13 @@ func ViewResource(cal []calendar.Calendar){
 	} else{
 	fmt.Println("Here is a list of all calendars:")
 	for _, c := range cal{
-		fmt.Println(c)
+			fmt.Printf("Calendar ID: %d\n",c.Id)
+			for _, r := range c.Resource{
+			fmt.Printf("Resource ID: %d\n", r.Id)
+				for _, e := range r.Event {
+				fmt.Printf("Event ID: %d\n", e.Id)
+				}
+			}
 		}
 
 	}
@@ -103,7 +111,7 @@ func UpdateResource(cal *[]calendar.Calendar){
 
 		for i, c := range *cal{
 		if i == len(*cal)-1{
-			fmt.Printf("%d", c.Id)
+			fmt.Printf("%d\n", c.Id)
 			break
 		}
 
@@ -151,7 +159,7 @@ func UpdateResource(cal *[]calendar.Calendar){
 		}
 }
 
-func DeleteResource(c []calendar.Calendar) []calendar.Calendar{
+func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar{
 	fmt.Println("Delete Resource!")
 	var delInput, confirm string
 
@@ -167,7 +175,7 @@ func DeleteResource(c []calendar.Calendar) []calendar.Calendar{
 		if err != nil {
 		return c
 	}
-	c = append(c[:num-1],c[num:]...)
+//	c = append(c[:num-1],c[num:]...)
 	
 	return c
 

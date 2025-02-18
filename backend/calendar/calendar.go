@@ -11,31 +11,31 @@ type Calendar struct {
 
 }
 
-func (c *Calendar) NewResource() resource.Resource{
+func (c *Calendar) NewResource() (resource.Resource, error){
 	if c.Resource == nil {
 		c.Resource = make([]resource.Resource,0)
 	}
-	newR := resource.Resource{Id:len(c.Resource)}
+	newR := resource.Resource{Id:len(c.Resource)+1}
 	c.Resource = append(c.Resource, newR)
 
-	return newR
+	return newR, nil
 	
 }
 
 
 
-func (c *Calendar) DeleteResource(r resource.Resource) error{
+func (c *Calendar) DeleteResource(r resource.Resource) (*resource.Resource, error){
 	if c.Resource == nil {
-		return errors.New("No resources to delete")
+		return nil, errors.New("No resources to delete")
 	}
 	for i, resource := range c.Resource {
 		if resource.Id == r.Id {
 			c.Resource = append(c.Resource[:i],c.Resource[i+1:]...)
-			return nil
+			return &resource, nil
 		}
 	}
 
-	return errors.New("Resource not found")
+	return nil, errors.New("Resource not found")
 
 }
 
