@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend/calendar"
 
 	"backend/calendarmanager"
 	"fmt"
@@ -47,7 +46,7 @@ func main() {
 					case "2":
 						ViewResource(calManager)
 					case "3":
-						//UpdateResource(&calList)
+						UpdateResource(&calManager)
 						fmt.Println("Update Resource")
 					case "4":
 						DeleteCalendar(&calManager)
@@ -82,14 +81,14 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 	}
 }
 
-func UpdateResource(cal *[]calendar.Calendar) {
+func UpdateResource(cm *calendarmanager.CalendarManager) {
 	fmt.Println("Update Resource!")
 
 	var openCal string
 	fmt.Println("Which calendar would you like to open?")
 
-	for i, c := range *cal {
-		if i == len(*cal)-1 {
+	for i, c := range cm.Calendars {
+		if i == len(cm.Calendars)-1 {
 			fmt.Printf("%d\n", c.Id)
 			break
 		}
@@ -98,7 +97,7 @@ func UpdateResource(cal *[]calendar.Calendar) {
 	}
 	fmt.Scan(&openCal)
 
-	for i, c := range *cal {
+	for i, c := range cm.Calendars {
 		strId := strconv.Itoa(c.Id)
 		if strId == openCal {
 			fmt.Println(c)
@@ -110,7 +109,7 @@ func UpdateResource(cal *[]calendar.Calendar) {
 			var calR string
 			fmt.Println("Which resource would you like to edit?")
 			fmt.Scan(&calR)
-
+			//doesn't edit anything because theres no way to add resources...yet
 			for j, resource := range c.Resource {
 				rId := strconv.Itoa(resource.Id)
 				if calR == rId {
@@ -124,15 +123,14 @@ func UpdateResource(cal *[]calendar.Calendar) {
 						if err != nil {
 							break
 						}
-						(*cal)[i].Resource[j].Event = append(resource.Event, *newE)
+						(cm.Calendars)[i].Resource[j].Event = append(resource.Event, *newE)
 						fmt.Println(resource.Event)
 					}
 
 				}
 
 			}
-			fmt.Println(cal)
-
+		
 		}
 
 	}
