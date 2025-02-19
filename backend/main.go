@@ -12,25 +12,10 @@ import (
 
 func main() {
 
-	//var cal calendar.Calendar
 	var username, password string
-	/*newR := cal.NewResource()
-	startTime := time.Now()
-	endTime := time.Now()
-	newE, _ := newR.NewEvent(startTime, endTime)
-	*/
-
 	var calManager calendarmanager.CalendarManager
-	bally := calManager.NewCalendar()
-	cally := calManager.NewCalendar()
-	fmt.Println(calManager.Calendars)
-	fmt.Println(bally)
-	fmt.Println(cally)
-	calManager.DeleteCalendar(cally)
-	//	calManager.DeleteCalendar(bally)
 
-	fmt.Println(calManager.Calendars)
-	var calList = make([]calendar.Calendar, 0)
+
 	fmt.Println("Enter username:")
 	fmt.Scan(&username)
 	fmt.Println("Enter password:")
@@ -62,7 +47,8 @@ func main() {
 					case "2":
 						ViewResource(calManager)
 					case "3":
-						UpdateResource(&calList)
+						//UpdateResource(&calList)
+						fmt.Println("Update Resource")
 					case "4":
 						DeleteCalendar(&calManager)
 					}
@@ -71,28 +57,11 @@ func main() {
 		}
 	}
 
-	//	newR.DeleteEvent(*newE)
+
 
 }
 
-// this also creates a calendar, i think a "CalendarManager" or similar abstraction is needed to hold all the calendars and move this functionality into something more useful than th emain file
-func CreateResource(c []calendar.Calendar) calendar.Calendar {
-	var cal calendar.Calendar
 
-	if len(c) == 0 {
-
-		cal.Id = 1
-	}
-
-	if len(c) != 0 {
-		cal.Id = c[len(c)-1].Id + 1
-	}
-	newR, _ := cal.NewResource()
-	startTime := time.Now()
-	endTime := time.Now()
-	newR.NewEvent(startTime, endTime)
-	return cal
-}
 
 func ViewResource(cm calendarmanager.CalendarManager) {
 
