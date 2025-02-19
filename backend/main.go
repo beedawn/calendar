@@ -169,7 +169,7 @@ func UpdateResource(cal *[]calendar.Calendar) {
 	}
 }
 
-func DeleteCalendar(cm *calendarmanager.CalendarManager){
+func DeleteCalendar(cm *calendarmanager.CalendarManager) {
 	fmt.Println("Delete Resource!")
 	var delInput, confirm string
 
@@ -191,6 +191,5 @@ func DeleteCalendar(cm *calendarmanager.CalendarManager){
 		}
 
 	}
-
 
 }
