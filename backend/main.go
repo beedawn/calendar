@@ -49,23 +49,22 @@ func main() {
 				for calInput != "q" {
 					fmt.Println("1 Create new Calendar")
 					fmt.Println("2 View a Calendar")
-					fmt.Println("3 Update a resource")
-					fmt.Println("4 Delete a resource")
+					fmt.Println("3 Update a Calendar")
+					fmt.Println("4 Delete a Calendar")
 
 					fmt.Scan(&calInput)
 					switch calInput {
 					case "1":
 						fmt.Println("***************")
 						fmt.Println("Creating calendar...")
-						cal := CreateResource(calList)
-						calList = append(calList, cal)
+						cal := calManager.NewCalendar()
 						fmt.Printf("Calendar %d, created!\n", cal.Id)
 					case "2":
-						ViewResource(calList)
+						ViewResource(calManager)
 					case "3":
 						UpdateResource(&calList)
 					case "4":
-						calList = DeleteCalendar(calList)
+						DeleteCalendar(&calManager)
 					}
 				}
 			}
@@ -95,13 +94,13 @@ func CreateResource(c []calendar.Calendar) calendar.Calendar {
 	return cal
 }
 
-func ViewResource(cal []calendar.Calendar) {
+func ViewResource(cm calendarmanager.CalendarManager) {
 
-	if len(cal) == 0 {
+	if len(cm.Calendars) == 0 {
 		fmt.Println("No calendars!")
 	} else {
 		fmt.Println("Here is a list of all calendars:")
-		for _, c := range cal {
+		for _, c := range cm.Calendars {
 			fmt.Printf("Calendar ID: %d\n", c.Id)
 			for _, r := range c.Resource {
 				fmt.Printf("Resource ID: %d\n", r.Id)
@@ -170,7 +169,7 @@ func UpdateResource(cal *[]calendar.Calendar) {
 	}
 }
 
-func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar {
+func DeleteCalendar(cm *calendarmanager.CalendarManager){
 	fmt.Println("Delete Resource!")
 	var delInput, confirm string
 
@@ -184,10 +183,14 @@ func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar {
 	}
 	num, err := strconv.Atoi(delInput)
 	if err != nil {
-		return c
+		return
 	}
-	c = append(c[:num-1], c[num:]...)
+	for _, cal := range cm.Calendars {
+		if cal.Id == num {
+			cm.DeleteCalendar(cal)
+		}
 
-	return c
+	}
+
 
 }
