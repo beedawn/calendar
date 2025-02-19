@@ -36,9 +36,9 @@ func (cm *CalendarManager) NewCalendar() calendar.Calendar {
 func (cm *CalendarManager) DeleteCalendar(c calendar.Calendar) {
 	num := -1
 	for i, cal := range cm.Calendars {
-		fmt.Println(i)
+		
 		if cal.Id == c.Id{
-		fmt.Println("Found it! %d", i)
+		
 		num = i+1
 		}
 

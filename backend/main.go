@@ -3,11 +3,11 @@ package main
 import (
 	"backend/calendar"
 
-	"fmt"
-	"time"
-	"strings"
-	"strconv"
 	"backend/calendarmanager"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func main() {
@@ -27,10 +27,10 @@ func main() {
 	fmt.Println(bally)
 	fmt.Println(cally)
 	calManager.DeleteCalendar(cally)
-//	calManager.DeleteCalendar(bally)
+	//	calManager.DeleteCalendar(bally)
 
 	fmt.Println(calManager.Calendars)
-	var calList = make([]calendar.Calendar,0)
+	var calList = make([]calendar.Calendar, 0)
 	fmt.Println("Enter username:")
 	fmt.Scan(&username)
 	fmt.Println("Enter password:")
@@ -65,7 +65,7 @@ func main() {
 					case "3":
 						UpdateResource(&calList)
 					case "4":
-						calList =	DeleteCalendar(calList)	
+						calList = DeleteCalendar(calList)
 					}
 				}
 			}
@@ -76,18 +76,17 @@ func main() {
 
 }
 
-//this also creates a calendar, i think a "CalendarManager" or similar abstraction is needed to hold all the calendars and move this functionality into something more useful than th emain file
-func CreateResource(c []calendar.Calendar) calendar.Calendar{
+// this also creates a calendar, i think a "CalendarManager" or similar abstraction is needed to hold all the calendars and move this functionality into something more useful than th emain file
+func CreateResource(c []calendar.Calendar) calendar.Calendar {
 	var cal calendar.Calendar
 
 	if len(c) == 0 {
 
-
-	cal.Id = 1
+		cal.Id = 1
 	}
 
 	if len(c) != 0 {
-	cal.Id = c[len(c)-1].Id+1	
+		cal.Id = c[len(c)-1].Id + 1
 	}
 	newR, _ := cal.NewResource()
 	startTime := time.Now()
@@ -96,18 +95,18 @@ func CreateResource(c []calendar.Calendar) calendar.Calendar{
 	return cal
 }
 
-func ViewResource(cal []calendar.Calendar){
+func ViewResource(cal []calendar.Calendar) {
 
-	if len(cal) ==0 {
+	if len(cal) == 0 {
 		fmt.Println("No calendars!")
-	} else{
-	fmt.Println("Here is a list of all calendars:")
-	for _, c := range cal{
-			fmt.Printf("Calendar ID: %d\n",c.Id)
-			for _, r := range c.Resource{
-			fmt.Printf("Resource ID: %d\n", r.Id)
+	} else {
+		fmt.Println("Here is a list of all calendars:")
+		for _, c := range cal {
+			fmt.Printf("Calendar ID: %d\n", c.Id)
+			for _, r := range c.Resource {
+				fmt.Printf("Resource ID: %d\n", r.Id)
 				for _, e := range r.Event {
-				fmt.Printf("Event ID: %d\n", e.Id)
+					fmt.Printf("Event ID: %d\n", e.Id)
 				}
 			}
 		}
@@ -115,80 +114,80 @@ func ViewResource(cal []calendar.Calendar){
 	}
 }
 
-func UpdateResource(cal *[]calendar.Calendar){
+func UpdateResource(cal *[]calendar.Calendar) {
 	fmt.Println("Update Resource!")
 
-		var openCal string
-		fmt.Println("Which calendar would you like to open?")
+	var openCal string
+	fmt.Println("Which calendar would you like to open?")
 
-		for i, c := range *cal{
-		if i == len(*cal)-1{
+	for i, c := range *cal {
+		if i == len(*cal)-1 {
 			fmt.Printf("%d\n", c.Id)
 			break
 		}
 
 		fmt.Printf("%d, ", c.Id)
 	}
-		fmt.Scan(&openCal)
+	fmt.Scan(&openCal)
 
-	for i, c := range *cal{
-	strId := strconv.Itoa(c.Id)
-	if strId == openCal{
+	for i, c := range *cal {
+		strId := strconv.Itoa(c.Id)
+		if strId == openCal {
 			fmt.Println(c)
 
-		for _, resource := range c.Resource {
-		fmt.Println(resource.Id)
-
-		}
-				var calR string
-				fmt.Println("Which resource would you like to edit?")
-				fmt.Scan(&calR)
-
-		for j, resource := range c.Resource {
-					rId:= strconv.Itoa(resource.Id)
-					if calR == rId {
-				var calEdit string
-				fmt.Println("What would you like to do next?\n1: Add Event")
-				fmt.Scan(&calEdit)
-				
-				if calEdit == "1" {
-					fmt.Println("hello")
-					newE, err := resource.NewEvent(time.Now(), time.Now())
-					if err != nil {
-						break
-							}
-					(*cal)[i].Resource[j].Event= append(resource.Event, *newE)
-					fmt.Println(resource.Event)
-				}
-
-					}
-
-		}
-				fmt.Println(cal)
+			for _, resource := range c.Resource {
+				fmt.Println(resource.Id)
 
 			}
+			var calR string
+			fmt.Println("Which resource would you like to edit?")
+			fmt.Scan(&calR)
+
+			for j, resource := range c.Resource {
+				rId := strconv.Itoa(resource.Id)
+				if calR == rId {
+					var calEdit string
+					fmt.Println("What would you like to do next?\n1: Add Event")
+					fmt.Scan(&calEdit)
+
+					if calEdit == "1" {
+						fmt.Println("hello")
+						newE, err := resource.NewEvent(time.Now(), time.Now())
+						if err != nil {
+							break
+						}
+						(*cal)[i].Resource[j].Event = append(resource.Event, *newE)
+						fmt.Println(resource.Event)
+					}
+
+				}
+
+			}
+			fmt.Println(cal)
 
 		}
+
+	}
 }
 
-func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar{
+func DeleteCalendar(c []calendar.Calendar) []calendar.Calendar {
 	fmt.Println("Delete Resource!")
 	var delInput, confirm string
 
-		fmt.Println("Which Calendar should be deleted?")
+	fmt.Println("Which Calendar should be deleted?")
 
-		fmt.Scan(&delInput)
-		fmt.Println(delInput+" will be deleted, are you sure?")
-		fmt.Scan(&confirm)
-		if confirm == "y" {
-			fmt.Println("Delete")
-		}
-		num ,err := strconv.Atoi(delInput)
-		if err != nil {
+	fmt.Scan(&delInput)
+	fmt.Println(delInput + " will be deleted, are you sure?")
+	fmt.Scan(&confirm)
+	if confirm == "y" {
+		fmt.Println("Delete")
+	}
+	num, err := strconv.Atoi(delInput)
+	if err != nil {
 		return c
 	}
-	c = append(c[:num-1],c[num:]...)
-	
+	c = append(c[:num-1], c[num:]...)
+
 	return c
 
 }
