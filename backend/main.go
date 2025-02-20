@@ -110,6 +110,10 @@ func UpdateResource(cm *calendarmanager.CalendarManager) {
 			fmt.Println("Which resource would you like to edit?")
 			fmt.Scan(&calR)
 			//doesn't edit anything because theres no way to add resources...yet
+
+			if len(c.Resource)==0{
+			fmt.Println("nothin!")
+			}
 			for j, resource := range c.Resource {
 				rId := strconv.Itoa(resource.Id)
 				if calR == rId {
