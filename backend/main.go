@@ -50,6 +50,7 @@ func main() {
 						fmt.Println("Update Resource")
 					case "4":
 						DeleteCalendar(&calManager)
+
 					}
 				}
 			}
