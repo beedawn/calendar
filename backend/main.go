@@ -32,8 +32,8 @@ func main() {
 
 				for calInput != "q" {
 					fmt.Println("1 Create new Calendar")
-					fmt.Println("2 View a Calendar")
-					fmt.Println("3 Update a Calendar")
+					fmt.Println("2 View All Calendars")
+					fmt.Println("3 Open a Calendar")
 					fmt.Println("4 Delete a Calendar")
 
 					fmt.Scan(&calInput)
@@ -46,7 +46,7 @@ func main() {
 					case "2":
 						ViewResource(calManager)
 					case "3":
-						UpdateResource(&calManager)
+						OpenCalendar(&calManager)
 						fmt.Println("Update Resource")
 					case "4":
 						DeleteCalendar(&calManager)
@@ -71,7 +71,7 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 		fmt.Println("Here is a list of all calendars:")
 		for _, c := range cm.Calendars {
 			fmt.Printf("Calendar ID: %d\n", c.Id)
-			for _, r := range c.Resource {
+			for _, r := range cm.Resource {
 				fmt.Printf("Resource ID: %d\n", r.Id)
 				for _, e := range r.Event {
 					fmt.Printf("Event ID: %d\n", e.Id)
@@ -82,9 +82,7 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 	}
 }
 
-func UpdateResource(cm *calendarmanager.CalendarManager) {
-	fmt.Println("Update Resource!")
-
+func OpenCalendar(cm *calendarmanager.CalendarManager) {
 	var openCal string
 	fmt.Println("Which calendar would you like to open?")
 
@@ -98,24 +96,26 @@ func UpdateResource(cm *calendarmanager.CalendarManager) {
 	}
 	fmt.Scan(&openCal)
 
-	for i, c := range cm.Calendars {
+	for _, c := range cm.Calendars {
 		strId := strconv.Itoa(c.Id)
 		if strId == openCal {
 			fmt.Println(c)
 
-			for _, resource := range c.Resource {
+			for _, resource := range cm.Resource {
 				fmt.Println(resource.Id)
 
 			}
 			var calR string
+
+			fmt.Println("What would you like to do?")
 			fmt.Println("Which resource would you like to edit?")
 			fmt.Scan(&calR)
 			//doesn't edit anything because theres no way to add resources...yet
 
-			if len(c.Resource)==0{
+			if len(cm.Resource)==0{
 			fmt.Println("nothin!")
 			}
-			for j, resource := range c.Resource {
+			for j, resource := range cm.Resource {
 				rId := strconv.Itoa(resource.Id)
 				if calR == rId {
 					var calEdit string
@@ -128,7 +128,7 @@ func UpdateResource(cm *calendarmanager.CalendarManager) {
 						if err != nil {
 							break
 						}
-						(cm.Calendars)[i].Resource[j].Event = append(resource.Event, *newE)
+						cm.Resource[j].Event = append(resource.Event, *newE)
 						fmt.Println(resource.Event)
 					}
 
