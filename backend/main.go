@@ -73,7 +73,7 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 			fmt.Printf("Calendar ID: %d\n", c.Id)
 			for _, r := range cm.Resource {
 				fmt.Printf("Resource ID: %d\n", r.Id)
-				for _, e := range r.Event {
+				for _, e := range c.Event {
 					fmt.Printf("Event ID: %d\n", e.Id)
 				}
 			}
@@ -124,12 +124,12 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 
 					if calEdit == "1" {
 						fmt.Println("hello")
-						newE, err := resource.NewEvent(time.Now(), time.Now())
+						newE, err := cm.Calendars[j].NewEvent(time.Now(), time.Now())
 						if err != nil {
 							break
 						}
-						cm.Resource[j].Event = append(resource.Event, *newE)
-						fmt.Println(resource.Event)
+						cm.Calendars[j].Event = append(cm.Calendars[j].Event, *newE)
+						fmt.Println(cm.Calendars[j].Event)
 					}
 
 				}
