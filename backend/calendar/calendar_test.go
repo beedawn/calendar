@@ -145,3 +145,28 @@ func TestDeleteEventResourceNotExist(t *testing.T){
 	}
 
 }
+
+
+
+func TestDeleteEventNoEvents(t *testing.T){
+	var newCalendar Calendar
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := newCalendar.DeleteEvent(eventN)
+	expectedErr := "Resource has no events"
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
+
+}
