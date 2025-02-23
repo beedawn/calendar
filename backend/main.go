@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"backend/calendarmanager"
 	"fmt"
 	"strconv"
@@ -13,7 +12,6 @@ func main() {
 
 	var username, password string
 	var calManager calendarmanager.CalendarManager
-
 
 	fmt.Println("Enter username:")
 	fmt.Scan(&username)
@@ -47,7 +45,6 @@ func main() {
 						ViewResource(calManager)
 					case "3":
 						OpenCalendar(&calManager)
-						fmt.Println("Update Resource")
 					case "4":
 						DeleteCalendar(&calManager)
 
@@ -57,11 +54,7 @@ func main() {
 		}
 	}
 
-
-
 }
-
-
 
 func ViewResource(cm calendarmanager.CalendarManager) {
 
@@ -105,37 +98,64 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 				fmt.Println(resource.Id)
 
 			}
-			var calR string
+			var calR, modStr string
+
+			for modStr != "q"{
 
 			fmt.Println("What would you like to do?")
-			fmt.Println("Which resource would you like to edit?")
-			fmt.Scan(&calR)
-			//doesn't edit anything because theres no way to add resources...yet
+			fmt.Println("1. Create Resource")
+			fmt.Println("2. Create Event")
+			fmt.Println("3. Edit Resource")
+			fmt.Println("4. Edit Event")
+			fmt.Println("5. Delete Resource")
+			fmt.Println("6. Delete Event")
+			fmt.Scan(&modStr)
 
-			if len(cm.Resource)==0{
-			fmt.Println("nothin!")
-			}
-			for j, resource := range cm.Resource {
-				rId := strconv.Itoa(resource.Id)
-				if calR == rId {
-					var calEdit string
-					fmt.Println("What would you like to do next?\n1: Add Event")
-					fmt.Scan(&calEdit)
+			switch modStr {
+			case "1":
+			fmt.Println("Create a resource")
 
-					if calEdit == "1" {
-						fmt.Println("hello")
-						newE, err := cm.Calendars[j].NewEvent(time.Now(), time.Now())
-						if err != nil {
-							break
+			case "2":
+				fmt.Println("Create an event")
+
+			case "3":
+				fmt.Println("Which resource would you like to edit?")
+				fmt.Scan(&calR)
+				//doesn't edit anything because theres no way to add resources...yet
+
+				if len(cm.Resource) == 0 {
+					fmt.Println("nothin!")
+				}
+				for j, resource := range cm.Resource {
+					rId := strconv.Itoa(resource.Id)
+					if calR == rId {
+						var calEdit string
+						fmt.Println("What would you like to do next?\n1: Add Event")
+						fmt.Scan(&calEdit)
+
+						if calEdit == "1" {
+							fmt.Println("hello")
+							newE, err := cm.Calendars[j].NewEvent(time.Now(), time.Now())
+							if err != nil {
+								break
+							}
+							cm.Calendars[j].Event = append(cm.Calendars[j].Event, *newE)
+							fmt.Println(cm.Calendars[j].Event)
 						}
-						cm.Calendars[j].Event = append(cm.Calendars[j].Event, *newE)
-						fmt.Println(cm.Calendars[j].Event)
+
 					}
 
 				}
+			case "4":
+				fmt.Println("Edit Event")
+			case "5":
+				fmt.Println("Delete Resource")
+			case "6":
+				fmt.Println("Delete Event")
 
 			}
-		
+			}
+
 		}
 
 	}
