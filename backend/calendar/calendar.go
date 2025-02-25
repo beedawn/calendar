@@ -25,7 +25,7 @@ func (c *Calendar) conflictCheck(startTime, endTime time.Time) error{
 		if eventOverlap(startTime, endTime, event.StartTime, event.EndTime) {
 		count++
 		}
-	if count >= c.ConcurrentEvents && (count != 0 && c.ConcurrentEvents !=0){
+	if count >= c.ConcurrentEvents {
 		return errors.New("times are conflicting!")
 		}
 	}

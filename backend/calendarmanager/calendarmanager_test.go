@@ -47,11 +47,11 @@ var cm CalendarManager
 func TestCalendarCreation(t *testing.T){
 	var cm CalendarManager
 
-	cm.Resource = make([]resource.Resource, 0)
+	cm.Resources = make([]resource.Resource, 0)
 
 
-	if len(cm.Resource) != 0 {
-		t.Errorf("Expected Resource to have a length, and for it to be 0, got %d", len(cm.Resource))
+	if len(cm.Resources) != 0 {
+		t.Errorf("Expected Resource to have a length, and for it to be 0, got %d", len(cm.Resources))
 	}
 	}
 
@@ -60,8 +60,8 @@ func TestNewResource(t *testing.T){
 	var cm CalendarManager
 	cm.NewResource()
 
-	if len(cm.Resource)!=1 {
-		t.Errorf("Expected Resource to have length of 1, has length %d", len(cm.Resource))
+	if len(cm.Resources)!=1 {
+		t.Errorf("Expected Resource to have length of 1, has length %d", len(cm.Resources))
 	}
 }
 
@@ -71,8 +71,8 @@ func TestDeleteResource (t *testing.T){
 
 	cm.DeleteResource(newR)
 
-	if len(cm.Resource)!=0{
-		t.Errorf("Expected Resource to be length of 0, got %d",len(cm.Resource))
+	if len(cm.Resources)!=0{
+		t.Errorf("Expected Resource to be length of 0, got %d",len(cm.Resources))
 	}
 
 
@@ -80,7 +80,7 @@ func TestDeleteResource (t *testing.T){
 func TestNilResource (t *testing.T){
 	
 	cm := &CalendarManager{
-		Resource: nil,
+		Resources: nil,
 	}
 
 	expectedErr := "No resources to delete"
@@ -103,7 +103,7 @@ func TestNilResource (t *testing.T){
 func TestResourceNotFound (t *testing.T){
 	
 	cm := &CalendarManager{
-		Resource:make([]resource.Resource,0),
+		Resources:make([]resource.Resource,0),
 	}
 
 	expectedErr := "Resource not found"
