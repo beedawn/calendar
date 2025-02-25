@@ -1,83 +1,172 @@
 package calendar
 
-import (
+import ( 
 	"testing"
-	"backend/resource"
+	"backend/event"
+	"time"
 )
 
-func TestCalendarCreation(t *testing.T){
-	var cal Calendar
-
-	cal.Resource = make([]resource.Resource, 0)
 
 
-	if len(cal.Resource) != 0 {
-		t.Errorf("Expected Resource to have a length, and for it to be 0, got %d", len(cal.Resource))
+func TestCalendarCreation (t *testing.T){
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "user"
+
+	newCalendar := Calendar{
+		Events: []event.Event{
+			{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime},
+		},
+	} 
+
+	if newCalendar.Events[0].Id != 0 {
+		t.Errorf("Expected Id to be 0, got %d", newCalendar.Events[0].Id)
 	}
+	if !newCalendar.Events[0].StartTime.Equal(startTime){
+		t.Errorf("Expected startTime to be %s, got %s", startTime, newCalendar.Events[0].StartTime)
 	}
-
-
-func TestNewResource(t *testing.T){
-	var cal Calendar
-	cal.NewResource()
-
-	if len(cal.Resource)!=1 {
-		t.Errorf("Expected Resource to have length of 1, has length %d", len(cal.Resource))
+	if !newCalendar.Events[0].EndTime.Equal(endTime) {
+		t.Errorf("Expected endtime to be %s, got %s", endTime, newCalendar.Events[0].EndTime)
+	}
+	if !newCalendar.Events[0].CreatedTime.Equal(createdTime) {
+		t.Errorf("Expected createdTime to be %s, got %s", createdTime, newCalendar.Events[0].CreatedTime)
+	}
+	if newCalendar.Events[0].User != username {
+		t.Errorf("Expected user to be %s, got %s", username, newCalendar.Events[0].User)
 	}
 }
 
-func TestDeleteResource (t *testing.T){
-	var cal Calendar
-	newR, _ := cal.NewResource()
+func TestNewEvent (t *testing.T){
+	var newCalendar Calendar
 
-	cal.DeleteResource(newR)
-
-	if len(cal.Resource)!=0{
-		t.Errorf("Expected Resource to be length of 0, got %d",len(cal.Resource))
-	}
-
-
-}
-func TestNilResource (t *testing.T){
+	startTime := time.Now()
+	endTime := time.Now()
+	newCalendar.NewEvent(startTime, endTime)
 	
-	cal := &Calendar{
-		Resource: nil,
+	if len(newCalendar.Events) != 1 {
+		t.Errorf("Expected length of events to be 1, got %d", len(newCalendar.Events))
+	}
+	
+}
+
+func TestNewEventSameTimes(t *testing.T){
+	var newCalendar Calendar
+
+	startTime := time.Now()
+	endTime := time.Now()
+	newCalendar.NewEvent(startTime, endTime)
+	newCalendar.NewEvent(startTime, endTime)
+
+	if len(newCalendar.Events) != 1 {
+		t.Errorf("Expected length of events to be 1 when testing two events with same times, got %d", len(newCalendar.Events))
+	
 	}
 
-	expectedErr := "No resources to delete"
 
-	_, err := cal.DeleteResource(resource.Resource{})
+
+}
+
+func TestNewEventStartTimeAfterEndTime(t *testing.T){
+	var newCalendar Calendar
+
+	startTime := time.Now()
+	endTime := time.Now()
+
+
+	newCalendar.NewEvent(endTime, startTime)
+
+	if len(newCalendar.Events) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(newCalendar.Events))
+	
+	}
+
+
+
+}
+
+
+func TestNewEventStartTimeEqualEndTime(t *testing.T){
+	var newCalendar Calendar
+
+	startTime := time.Now()
+	newCalendar.NewEvent(startTime, startTime)
+
+	if len(newCalendar.Events) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(newCalendar.Events))
+	
+	}
+
+
+
+}
+
+
+
+func TestDeleteEvent(t *testing.T){
+	var newCalendar Calendar
+
+	startTime := time.Now()
+	endTime := time.Now()
+	newCalendar.NewEvent(startTime, endTime)
+	newCalendar.DeleteEvent(newCalendar.Events[0])
+
+	if len(newCalendar.Events) != 0 {
+		t.Errorf("Expected length of events to be 0 after deleting event, got %d", len(newCalendar.Events))
+	
+	}
+
+
+	
+
+}
+
+
+func TestDeleteEventResourceNotExist(t *testing.T){
+	var newCalendar Calendar
+	newCalendar.Events = make([]event.Event,0)
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := newCalendar.DeleteEvent(eventN)
+	expectedErr := "Event not found in given resource"
 
 	if err == nil {
 		t.Fatalf("Expected an error, but got none")
 	}
+
 	if err.Error() != expectedErr {
 		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
 	}
-
-	
 
 }
 
 
 
-func TestResourceNotFound (t *testing.T){
-	
-	cal := &Calendar{
-		Resource:make([]resource.Resource,0),
-	}
+func TestDeleteEventNoEvents(t *testing.T){
+	var newCalendar Calendar
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
 
-	expectedErr := "Resource not found"
 
-	_, err := cal.DeleteResource(resource.Resource{Id:1})
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := newCalendar.DeleteEvent(eventN)
+	expectedErr := "Resource has no events"
 
 	if err == nil {
 		t.Fatalf("Expected an error, but got none")
 	}
+
 	if err.Error() != expectedErr {
 		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
 	}
-
-	
 
 }

@@ -2,12 +2,15 @@ package calendarmanager
 
 import (
 	"backend/calendar"
+	"backend/resource"
 	"fmt"
+	"errors"
 )
 
 type CalendarManager struct{
 	Id int
 	Calendars []calendar.Calendar
+	Resources []resource.Resource
 
 }
 
@@ -49,3 +52,36 @@ func (cm *CalendarManager) DeleteCalendar(c calendar.Calendar) {
 	}
 
 }
+
+
+
+
+func (cm *CalendarManager) NewResource() (resource.Resource, error){
+	if cm.Resources == nil {
+		cm.Resources = make([]resource.Resource,0)
+	}
+	newR := resource.Resource{Id:len(cm.Resources)+1}
+	cm.Resources = append(cm.Resources, newR)
+
+	return newR, nil
+	
+}
+
+
+
+func (cm *CalendarManager) DeleteResource(r resource.Resource) (*resource.Resource, error){
+	if cm.Resources == nil {
+		return nil, errors.New("No resources to delete")
+	}
+	for i, resource := range cm.Resources {
+		if resource.Id == r.Id {
+			cm.Resources = append(cm.Resources[:i],cm.Resources[i+1:]...)
+			return &resource, nil
+		}
+	}
+
+	return nil, errors.New("Resource not found")
+
+}
+
+
