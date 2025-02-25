@@ -10,7 +10,7 @@ import (
 type CalendarManager struct{
 	Id int
 	Calendars []calendar.Calendar
-	Resource []resource.Resource
+	Resources []resource.Resource
 
 }
 
@@ -57,11 +57,11 @@ func (cm *CalendarManager) DeleteCalendar(c calendar.Calendar) {
 
 
 func (cm *CalendarManager) NewResource() (resource.Resource, error){
-	if cm.Resource == nil {
-		cm.Resource = make([]resource.Resource,0)
+	if cm.Resources == nil {
+		cm.Resources = make([]resource.Resource,0)
 	}
-	newR := resource.Resource{Id:len(cm.Resource)+1}
-	cm.Resource = append(cm.Resource, newR)
+	newR := resource.Resource{Id:len(cm.Resources)+1}
+	cm.Resources = append(cm.Resources, newR)
 
 	return newR, nil
 	
@@ -70,12 +70,12 @@ func (cm *CalendarManager) NewResource() (resource.Resource, error){
 
 
 func (cm *CalendarManager) DeleteResource(r resource.Resource) (*resource.Resource, error){
-	if cm.Resource == nil {
+	if cm.Resources == nil {
 		return nil, errors.New("No resources to delete")
 	}
-	for i, resource := range cm.Resource {
+	for i, resource := range cm.Resources {
 		if resource.Id == r.Id {
-			cm.Resource = append(cm.Resource[:i],cm.Resource[i+1:]...)
+			cm.Resources = append(cm.Resources[:i],cm.Resources[i+1:]...)
 			return &resource, nil
 		}
 	}
