@@ -121,7 +121,7 @@ fmt.Printf("Resource Id: %d \n", r.Id)
 					}
 			case "2":
 				fmt.Println("Create an event")
-					event, err:=	cm.Calendars[i].NewEvent(time.Now(),time.Now())
+						cm.Calendars[i].NewEvent(time.Now(),time.Now())
 
 				for _, e := range cm.Calendars[i].Events{
 fmt.Printf("Event ID: %d \n", e.Id)
