@@ -1,11 +1,13 @@
 package event
 import (
 "time"
+	"backend/resource"
 )
 //maybe user added to this, or UserGroup?
 
 type Event struct {
 	Id int
+	Resources []resource.Resource
 	User string
 	Duration string
 	CreatedTime time.Time

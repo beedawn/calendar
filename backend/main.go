@@ -61,7 +61,7 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 	if len(cm.Calendars) == 0 {
 		fmt.Println("No calendars!")
 	} else {
-		fmt.Println("Here is a list of all resources and calendars:")
+		fmt.Println("Here is a list of all resources and calendars and events:")
 
 			for _, r := range cm.Resources {
 				fmt.Printf("Resource ID: %d\n", r.Id)
