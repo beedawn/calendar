@@ -101,7 +101,7 @@ func (cm *CalendarManager) conflictCheck(startTime, endTime time.Time, r resourc
 		if res.Id == r.Id && eventOverlap(startTime, endTime, event.StartTime, event.EndTime) {
 		count++
 		}
-	if count > calendar.ConcurrentEvents{
+	if count >= calendar.ConcurrentEvents{
 		return errors.New("times are conflicting!")
 		}
 			}
@@ -136,7 +136,7 @@ func (cm *CalendarManager) NewEvent(start time.Time, end time.Time, c *calendar.
 	}
 	// when creating a new event in a room, we need to one, figure out how many concurrent events in a room can take place? and check to ensure there are no conflicting events before adding a new one
 	//if no conflicts then
-	newE := event.Event{Id:len(c.Events)+1, CreatedTime: time.Now(), StartTime:start, EndTime: end}
+	newE := event.Event{Id: int(time.Now().UnixNano()), CreatedTime: time.Now(), StartTime:start, EndTime: end}
 	c.Events = append(c.Events, newE)
 	//if there are conflicts, do nothing and return an error
 
