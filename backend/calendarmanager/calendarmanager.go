@@ -121,7 +121,7 @@ func validateTimes(startTime, endTime time.Time) error{
 	return nil
 }
 
-func (cm *CalendarManager) NewEvent(start time.Time, end time.Time, c calendar.Calendar, r resource.Resource) (*event.Event, error) {
+func (cm *CalendarManager) NewEvent(start time.Time, end time.Time, c *calendar.Calendar, r resource.Resource) (*event.Event, error) {
 
 	if validateTimes(start, end) != nil {
 		fmt.Println("error!")
@@ -145,7 +145,7 @@ func (cm *CalendarManager) NewEvent(start time.Time, end time.Time, c calendar.C
 
 //for editing an event, do we just want to delete/ add event or have an editing function?
 
-func (cm *CalendarManager) DeleteEvent(e event.Event, c calendar.Calendar,) error {
+func (cm *CalendarManager) DeleteEvent(e event.Event, c *calendar.Calendar,) error {
 	if c.Events == nil {
 		return errors.New("Resource has no events")
 	}
