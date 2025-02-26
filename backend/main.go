@@ -61,7 +61,7 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 	if len(cm.Calendars) == 0 {
 		fmt.Println("No calendars!")
 	} else {
-		fmt.Println("Here is a list of all resources and calendars:")
+		fmt.Println("Here is a list of all resources and calendars and events:")
 
 			for _, r := range cm.Resources {
 				fmt.Printf("Resource ID: %d\n", r.Id)
@@ -121,7 +121,23 @@ fmt.Printf("Resource Id: %d \n", r.Id)
 					}
 			case "2":
 				fmt.Println("Create an event")
-						cm.Calendars[i].NewEvent(time.Now(),time.Now())
+					var resourceId string
+					fmt.Println("Which resource should it be added to?")
+					fmt.Scan(&resourceId)
+
+for _, r := range cm.Resources{
+	rId := strconv.Itoa(r.Id)
+
+	if rId == resourceId {
+		fmt.Println("match found")
+	cm.NewEvent(time.Now(),time.Now(), &cm.Calendars[i], r)
+
+						}
+					}
+
+
+				
+					//	cm.Calendars[i].NewEvent(time.Now(),time.Now())
 
 				for _, e := range cm.Calendars[i].Events{
 fmt.Printf("Event ID: %d \n", e.Id)

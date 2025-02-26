@@ -72,7 +72,7 @@ func (c *Calendar) DeleteEvent(e event.Event) error {
 		return errors.New("Resource has no events")
 	}
 	for i, event := range c.Events {
-		if event == e {
+		if event.Id == e.Id {
 		c.Events = append(c.Events[:i],c.Events[i+1:]...)
 			return nil
 		}
