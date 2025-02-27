@@ -97,11 +97,13 @@ func (cm *CalendarManager) conflictCheck(startTime, endTime time.Time, r resourc
 	count := 0
 	for _, calendar := range cm.Calendars{
 	for _, event := range calendar.Events{
-			for _, res := range event.Resources{
+			for _, res := range cm.Resources{
+
+		
 		if res.Id == r.Id && eventOverlap(startTime, endTime, event.StartTime, event.EndTime) {
 		count++
 		}
-	if count >= calendar.ConcurrentEvents{
+	if count > calendar.ConcurrentEvents{
 		return errors.New("times are conflicting!")
 		}
 			}
@@ -128,6 +130,8 @@ func (cm *CalendarManager) NewEvent(start time.Time, end time.Time, c *calendar.
 	return nil, errors.New("end time is before start time")
 	}
 	conflictResult := cm.conflictCheck(start, end, r)
+
+
 	if conflictResult != nil{
 		return nil, conflictResult
 	}
