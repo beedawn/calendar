@@ -3,6 +3,9 @@ package calendarmanager
 import (
 	"testing"
 	"backend/resource"
+
+	"backend/event"
+	"time"
 )
 
 func TestNewCalendar(t *testing.T){
@@ -11,10 +14,7 @@ func TestNewCalendar(t *testing.T){
 
 	if len(cm.Calendars) != 1{
 		t.Errorf("Expected Calendars to have length 1, instread got %d", len(cm.Calendars))
-
 	}	
-
-
 }
 
 
@@ -118,5 +118,158 @@ func TestResourceNotFound (t *testing.T){
 	}
 
 	
+
+}
+
+
+
+func eventSetup(cm *CalendarManager){
+
+	cm.NewCalendar()
+	cm.NewResource()
+
+
+}
+
+func TestNewEvent (t *testing.T){
+	var cm CalendarManager
+	eventSetup(&cm)
+
+	startTime := time.Now()
+	endTime := time.Now()
+	cm.NewEvent(startTime, endTime, &cm.Calendars[0],cm.Resources[0])
+	
+	if len(cm.Calendars[0].Events) != 1 {
+		t.Errorf("Expected length of events to be 1, got %d", len(cm.Calendars[0].Events))
+	}
+	
+}
+
+func TestNewEventSameTimes(t *testing.T){
+	var cm CalendarManager
+
+	eventSetup(&cm)
+	
+	startTime := time.Now()
+	endTime := time.Now()
+	cm.NewEvent(startTime, endTime, &cm.Calendars[0], cm.Resources[0])
+	cm.NewEvent(startTime, endTime, &cm.Calendars[0], cm.Resources[0])
+
+	if len(cm.Calendars[0].Events) != 1 {
+		t.Errorf("Expected length of events to be 1 when testing two events with same times, got %d", len(cm.Calendars[0].Events))
+	
+	}
+
+
+
+}
+
+func TestNewEventStartTimeAfterEndTime(t *testing.T){
+	var cm CalendarManager
+
+	eventSetup(&cm)
+
+	startTime := time.Now()
+	endTime := time.Now()
+
+
+	cm.NewEvent(endTime, startTime, &cm.Calendars[0],cm.Resources[0])
+
+	if len(cm.Calendars[0].Events) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(cm.Calendars[0].Events))
+	
+	}
+
+
+
+}
+
+
+func TestNewEventStartTimeEqualEndTime(t *testing.T){
+	var cm CalendarManager
+	eventSetup(&cm)
+	startTime := time.Now()
+	cm.NewEvent(startTime, startTime, &cm.Calendars[0], cm.Resources[0])
+
+	if len(cm.Calendars[0].Events) != 0 {
+		t.Errorf("Expected length of events to be 0 when adding an event with a start time before the end time, got %d", len(cm.Calendars[0].Events))
+	
+	}
+
+
+
+}
+
+
+
+func TestDeleteEvent(t *testing.T){
+	var cm CalendarManager
+
+	eventSetup(&cm)
+	startTime := time.Now()
+	endTime := time.Now()
+	cm.NewEvent(startTime, endTime, &cm.Calendars[0], cm.Resources[0])
+	cm.DeleteEvent(cm.Calendars[0].Events[0], &cm.Calendars[0])
+
+	if len(cm.Calendars[0].Events) != 0 {
+		t.Errorf("Expected length of events to be 0 after deleting event, got %d", len(cm.Calendars[0].Events))
+	
+	}
+
+
+	
+
+}
+
+
+func TestDeleteEventResourceNotExist(t *testing.T){
+	var cm CalendarManager
+	eventSetup(&cm)
+
+	cm.Calendars[0].Events = make([]event.Event,0)
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := cm.DeleteEvent(eventN, &cm.Calendars[0])
+	expectedErr := "Event not found in given resource"
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
+
+}
+
+
+
+func TestDeleteEventNoEvents(t *testing.T){
+	var cm CalendarManager
+	eventSetup(&cm)
+	startTime := time.Now()
+	endTime := time.Now()
+	createdTime := time.Now()
+	username := "test"
+
+
+	eventN := event.Event{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime}
+		 
+	err := cm.DeleteEvent(eventN, &cm.Calendars[0])
+	expectedErr := "Resource has no events"
+
+	if err == nil {
+		t.Fatalf("Expected an error, but got none")
+	}
+
+	if err.Error() != expectedErr {
+		t.Errorf("Expected error message %q, but got %q", expectedErr, err.Error())
+	}
 
 }

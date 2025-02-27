@@ -33,6 +33,7 @@ func main() {
 					fmt.Println("2 View All Calendars")
 					fmt.Println("3 Open a Calendar")
 					fmt.Println("4 Delete a Calendar")
+					fmt.Println("5 Create new Resource")
 
 					fmt.Scan(&calInput)
 					switch calInput {
@@ -47,6 +48,8 @@ func main() {
 						OpenCalendar(&calManager)
 					case "4":
 						DeleteCalendar(&calManager)
+					case "5":
+						CreateCalendar(&calManager)
 
 					}
 				}
@@ -54,6 +57,17 @@ func main() {
 		}
 	}
 
+}
+
+
+func CreateCalendar(cm *calendarmanager.CalendarManager){
+
+
+			fmt.Println("Create a resource")
+					 cm.NewResource()
+				for _, r := range cm.Resources{
+fmt.Printf("Resource Id: %d \n", r.Id)
+					}
 }
 
 func ViewResource(cm calendarmanager.CalendarManager) {
@@ -69,8 +83,6 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 			}
 		for i, c := range cm.Calendars {
 			fmt.Printf("Calendar ID: %d\n", c.Id)
-			fmt.Println(i)
-			fmt.Println(cm.Calendars[i].Events)
 				for _, e := range cm.Calendars[i].Events {
 					fmt.Printf("Event ID: %d\n", e.Id)
 				}
@@ -160,7 +172,7 @@ fmt.Printf("Event ID: %d \n", e.Id)
 
 						if calEdit == "1" {
 							fmt.Println("hello")
-							newE, err := cm.Calendars[j].NewEvent(time.Now(), time.Now())
+							newE, err := cm.NewEvent(time.Now(), time.Now(), &cm.Calendars[j], resource)
 							if err != nil {
 								break
 							}
