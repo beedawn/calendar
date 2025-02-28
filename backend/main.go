@@ -38,10 +38,7 @@ func main() {
 					fmt.Scan(&calInput)
 					switch calInput {
 					case "1":
-						fmt.Println("***************")
-						fmt.Println("Creating calendar...")
-						cal := calManager.NewCalendar()
-						fmt.Printf("Calendar %d, created!\n", cal.Id)
+						CreateCalendar(&calManager)	
 					case "2":
 						ViewResource(calManager)
 					case "3":
@@ -49,7 +46,7 @@ func main() {
 					case "4":
 						DeleteCalendar(&calManager)
 					case "5":
-						CreateCalendar(&calManager)
+						CreateResource(&calManager)
 
 					}
 				}
@@ -59,7 +56,12 @@ func main() {
 
 }
 
-func CreateCalendar(cm *calendarmanager.CalendarManager) {
+func CreateCalendar(cm *calendarmanager.CalendarManager){
+	cal := cm.NewCalendar()
+	fmt.Printf("Calendar %d, created!\n", cal.Id)
+}
+
+func CreateResource(cm *calendarmanager.CalendarManager) {
 
 	fmt.Println("Create a resource")
 	cm.NewResource()
@@ -113,23 +115,14 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 			for modStr != "q" {
 
 				fmt.Println("What would you like to do?")
-				fmt.Println("1. Create Resource")
-				fmt.Println("2. Create Event")
-				fmt.Println("3. Edit Resource")
-				fmt.Println("4. Edit Event")
-				fmt.Println("5. Delete Resource")
-				fmt.Println("6. Delete Event")
+				fmt.Println("1. Create Event")
+				fmt.Println("2. Edit Resource")
+				fmt.Println("3. Edit Event")
+				fmt.Println("4. Delete Event")
 				fmt.Scan(&modStr)
 
 				switch modStr {
-				case "1":
-					//maybe this should be a level up?
-					fmt.Println("Create a resource")
-					cm.NewResource()
-					for _, r := range cm.Resources {
-						fmt.Printf("Resource Id: %d \n", r.Id)
-					}
-				case "2":
+					case "1":
 					fmt.Println("Create an event")
 					var resourceId string
 					fmt.Println("Which resource should it be added to?")
@@ -145,13 +138,11 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 						}
 					}
 
-					//	cm.Calendars[i].NewEvent(time.Now(),time.Now())
-
 					for _, e := range cm.Calendars[i].Events {
 						fmt.Printf("Event ID: %d \n", e.Id)
 					}
 
-				case "3":
+				case "2":
 					fmt.Println("Which resource would you like to edit?")
 					fmt.Scan(&calR)
 					//doesn't edit anything because theres no way to add resources...yet
@@ -179,12 +170,14 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 						}
 
 					}
-				case "4":
+				case "3":
 					fmt.Println("Edit Event")
-				case "5":
-					fmt.Println("Delete Resource")
-				case "6":
+				case "4":
 					fmt.Println("Delete Event")
+					fmt.Println("Enter the ID of the event you'd like to delete:")
+					var delEvent string
+					fmt.Scan(&delEvent)
+					
 
 				}
 			}
