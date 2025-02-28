@@ -1,14 +1,12 @@
 package calendar
 
-import ( 
-	"testing"
+import (
 	"backend/event"
+	"testing"
 	"time"
 )
 
-
-
-func TestCalendarCreation (t *testing.T){
+func TestCalendarCreation(t *testing.T) {
 	startTime := time.Now()
 	endTime := time.Now()
 	createdTime := time.Now()
@@ -18,12 +16,12 @@ func TestCalendarCreation (t *testing.T){
 		Events: []event.Event{
 			{Id: 0, User: username, StartTime: startTime, EndTime: endTime, CreatedTime: createdTime},
 		},
-	} 
+	}
 
 	if newCalendar.Events[0].Id != 0 {
 		t.Errorf("Expected Id to be 0, got %d", newCalendar.Events[0].Id)
 	}
-	if !newCalendar.Events[0].StartTime.Equal(startTime){
+	if !newCalendar.Events[0].StartTime.Equal(startTime) {
 		t.Errorf("Expected startTime to be %s, got %s", startTime, newCalendar.Events[0].StartTime)
 	}
 	if !newCalendar.Events[0].EndTime.Equal(endTime) {
@@ -36,5 +34,3 @@ func TestCalendarCreation (t *testing.T){
 		t.Errorf("Expected user to be %s, got %s", username, newCalendar.Events[0].User)
 	}
 }
-
-

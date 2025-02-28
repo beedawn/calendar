@@ -59,15 +59,13 @@ func main() {
 
 }
 
+func CreateCalendar(cm *calendarmanager.CalendarManager) {
 
-func CreateCalendar(cm *calendarmanager.CalendarManager){
-
-
-			fmt.Println("Create a resource")
-					 cm.NewResource()
-				for _, r := range cm.Resources{
-fmt.Printf("Resource Id: %d \n", r.Id)
-					}
+	fmt.Println("Create a resource")
+	cm.NewResource()
+	for _, r := range cm.Resources {
+		fmt.Printf("Resource Id: %d \n", r.Id)
+	}
 }
 
 func ViewResource(cm calendarmanager.CalendarManager) {
@@ -77,16 +75,16 @@ func ViewResource(cm calendarmanager.CalendarManager) {
 	} else {
 		fmt.Println("Here is a list of all resources and calendars and events:")
 
-			for _, r := range cm.Resources {
-				fmt.Printf("Resource ID: %d\n", r.Id)
+		for _, r := range cm.Resources {
+			fmt.Printf("Resource ID: %d\n", r.Id)
 
-			}
+		}
 		for i, c := range cm.Calendars {
 			fmt.Printf("Calendar ID: %d\n", c.Id)
-				for _, e := range cm.Calendars[i].Events {
-					fmt.Printf("Event ID: %d\n", e.Id)
-				}
-			
+			for _, e := range cm.Calendars[i].Events {
+				fmt.Printf("Event ID: %d\n", e.Id)
+			}
+
 		}
 
 	}
@@ -109,88 +107,86 @@ func OpenCalendar(cm *calendarmanager.CalendarManager) {
 	for i, c := range cm.Calendars {
 		strId := strconv.Itoa(c.Id)
 		if strId == openCal {
-		
+
 			var calR, modStr string
 
-			for modStr != "q"{
+			for modStr != "q" {
 
-			fmt.Println("What would you like to do?")
-			fmt.Println("1. Create Resource")
-			fmt.Println("2. Create Event")
-			fmt.Println("3. Edit Resource")
-			fmt.Println("4. Edit Event")
-			fmt.Println("5. Delete Resource")
-			fmt.Println("6. Delete Event")
-			fmt.Scan(&modStr)
+				fmt.Println("What would you like to do?")
+				fmt.Println("1. Create Resource")
+				fmt.Println("2. Create Event")
+				fmt.Println("3. Edit Resource")
+				fmt.Println("4. Edit Event")
+				fmt.Println("5. Delete Resource")
+				fmt.Println("6. Delete Event")
+				fmt.Scan(&modStr)
 
-			switch modStr {
-			case "1":
+				switch modStr {
+				case "1":
 					//maybe this should be a level up?
-			fmt.Println("Create a resource")
-					 cm.NewResource()
-				for _, r := range cm.Resources{
-fmt.Printf("Resource Id: %d \n", r.Id)
+					fmt.Println("Create a resource")
+					cm.NewResource()
+					for _, r := range cm.Resources {
+						fmt.Printf("Resource Id: %d \n", r.Id)
 					}
-			case "2":
-				fmt.Println("Create an event")
+				case "2":
+					fmt.Println("Create an event")
 					var resourceId string
 					fmt.Println("Which resource should it be added to?")
 					fmt.Scan(&resourceId)
 
-for _, r := range cm.Resources{
-	rId := strconv.Itoa(r.Id)
+					for _, r := range cm.Resources {
+						rId := strconv.Itoa(r.Id)
 
-	if rId == resourceId {
-		fmt.Println("match found")
-	cm.NewEvent(time.Now(),time.Now(), &cm.Calendars[i], r)
+						if rId == resourceId {
+							fmt.Println("match found")
+							cm.NewEvent(time.Now(), time.Now(), &cm.Calendars[i], r)
 
 						}
 					}
 
-
-				
 					//	cm.Calendars[i].NewEvent(time.Now(),time.Now())
 
-				for _, e := range cm.Calendars[i].Events{
-fmt.Printf("Event ID: %d \n", e.Id)
+					for _, e := range cm.Calendars[i].Events {
+						fmt.Printf("Event ID: %d \n", e.Id)
 					}
 
-			case "3":
-				fmt.Println("Which resource would you like to edit?")
-				fmt.Scan(&calR)
-				//doesn't edit anything because theres no way to add resources...yet
+				case "3":
+					fmt.Println("Which resource would you like to edit?")
+					fmt.Scan(&calR)
+					//doesn't edit anything because theres no way to add resources...yet
 
-				if len(cm.Resources) == 0 {
-					fmt.Println("nothin!")
-				}
-				for j, resource := range cm.Resources {
-					rId := strconv.Itoa(resource.Id)
-					if calR == rId {
-						var calEdit string
-						fmt.Println("What would you like to do next?\n1: Add Event")
-						fmt.Scan(&calEdit)
+					if len(cm.Resources) == 0 {
+						fmt.Println("nothin!")
+					}
+					for j, resource := range cm.Resources {
+						rId := strconv.Itoa(resource.Id)
+						if calR == rId {
+							var calEdit string
+							fmt.Println("What would you like to do next?\n1: Add Event")
+							fmt.Scan(&calEdit)
 
-						if calEdit == "1" {
-							fmt.Println("hello")
-							newE, err := cm.NewEvent(time.Now(), time.Now(), &cm.Calendars[j], resource)
-							if err != nil {
-								break
+							if calEdit == "1" {
+								fmt.Println("hello")
+								newE, err := cm.NewEvent(time.Now(), time.Now(), &cm.Calendars[j], resource)
+								if err != nil {
+									break
+								}
+								cm.Calendars[j].Events = append(cm.Calendars[j].Events, *newE)
+								fmt.Println(cm.Calendars[j].Events)
 							}
-							cm.Calendars[j].Events = append(cm.Calendars[j].Events, *newE)
-							fmt.Println(cm.Calendars[j].Events)
+
 						}
 
 					}
+				case "4":
+					fmt.Println("Edit Event")
+				case "5":
+					fmt.Println("Delete Resource")
+				case "6":
+					fmt.Println("Delete Event")
 
 				}
-			case "4":
-				fmt.Println("Edit Event")
-			case "5":
-				fmt.Println("Delete Resource")
-			case "6":
-				fmt.Println("Delete Event")
-
-			}
 			}
 
 		}
